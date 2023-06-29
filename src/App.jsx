@@ -10,14 +10,6 @@ function App() {
 	const [showScan, setShowScan] = useState(false);
 	const [showGenerate, setShowGenerate] = useState(false);
 
-	/* const handleChangeAction = (data) => {
-		if (data === "generate") {
-			setShowCategory("generate");
-		}
-		if (data === "scan") {
-			setShowScan(!showScan);
-		}
-	}; */
 
 	return (
 		<>

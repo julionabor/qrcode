@@ -3,40 +3,47 @@ import { useEffect, useState } from "react";
 
 const Scan = () => {
 	const [scanResult, setScanResult] = useState(null);
-	console.log(scanResult);
-
+	const [isCleared, setIsCleared] = useState(false);
 	// const onNewScanResult = (decodedText, decodedResult) => {
 	//     // handle decoded results here
 	// };
-
+	var html5QrcodeScanner;
 	useEffect(() => {
-		const scanner = new Html5QrcodeScanner("reader", {
-			qrbox: {
-				width: 120,
-				height: 100,
+		function onScanSuccess(decodedResult) {
+			// handle the scanned code as you like, for example:
+			html5QrcodeScanner.clear();
+			setScanResult(decodedResult);
+			setIsCleared(true);
+
+			// setTimeout(() => {
+			// 	setScanResult("");
+			// }, 2000);
+		}
+
+		/* 	function onScanFailure(error) {
+				// handle scan failure, usually better to ignore and keep scanning.
+				// for example:
+				if (error) console.log(error);
+			} */
+		html5QrcodeScanner = new Html5QrcodeScanner(
+			"reader",
+			{
+				fps: 20,
+				qrbox: {
+					width: 150,
+					height: 150,
+				},
+				aspectRatio: 1.0,
+				useBarCodeDetectorIfSupported: true,
 			},
-			fps: 5,
-			aspectRatio: 1.333334,
-		});
+			false
+		);
+		if (!isCleared) html5QrcodeScanner.render((e) => onScanSuccess(e));
 
-		let isScanning = true;
-
-		scanner.render(success, error);
-
-		function success(result) {
-			if (isScanning) {
-				scanner.clear();
-				setScanResult(result);
-				isScanning= false;
-			}
-		}
-		function error(err) {
-			return console.error(err);
-		}
-		// cleanup function when component will unmount
 		return () => {
-			scanner.clear().catch((error) => {
+			html5QrcodeScanner.clear().catch((error) => {
 				console.error("Failed to clear html5QrcodeScanner. ", error);
+				setIsCleared(false);
 			});
 		};
 	}, []);
@@ -45,9 +52,7 @@ const Scan = () => {
 			{scanResult ? (
 				<div>
 					<h3>QR Code lido:</h3>
-					<a href={scanResult} target="_self" rel="noopener">
-						{scanResult}
-					</a>
+					<a href={scanResult}>{scanResult}</a>
 				</div>
 			) : (
 				<div id="reader"></div>
