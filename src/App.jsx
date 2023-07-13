@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./App.css";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import FlipIcon from "@mui/icons-material/Flip";
 
 import imgGenerate from "./assets/generate.png";
 import imgScanQR from "./assets/scan.svg";
@@ -10,26 +12,26 @@ function App() {
 	const [showScan, setShowScan] = useState(false);
 	const [showGenerate, setShowGenerate] = useState(false);
 
-
 	return (
 		<>
 			<div>
 				<div className="wrapper">
-					<h1>Gerar QRCode</h1>
-					<img
-						src={imgGenerate}
-						alt="Gerar QR Code"
-						onClick={() => setShowGenerate(!showGenerate)}
-					/>
+					<div onClick={() => setShowGenerate(!showGenerate)}>
+						<h1>
+							<QrCodeScannerIcon /> Gerar QRCode
+						</h1>
+						<img src={imgGenerate} alt="Gerar QR Code" />
 
-					{showGenerate && <Generate />}
-					<h1>Ler QRCode</h1>
-					<img
-						src={imgScanQR}
-						alt="Gerar QR Code"
-						onClick={() => setShowScan(!showScan)}
-					/>
-					{showScan && <Scan />}
+						{showGenerate && <Generate />}
+					</div>
+					<div onClick={() => setShowScan(!showScan)}>
+						<h1>
+							{" "}
+							<FlipIcon /> Ler QRCode
+						</h1>
+						<img src={imgScanQR} alt="Gerar QR Code" />
+						{showScan && <Scan />}
+					</div>
 				</div>
 			</div>
 		</>
